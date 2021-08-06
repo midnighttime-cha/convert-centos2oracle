@@ -1,11 +1,11 @@
 # วิธีเปลี่ยน CentOS 8 เป็น Oracle Linux 8 และติดตั้ง Oracle database 19c enterprise บน Digital Ocean
 
-## ทรัพยากรที่ต้องการ
+## 1. ทรัพยากรที่ต้องการ
 - CPU - 3.4 Ghz (2 cores)
 - Memory - 8 GB
 - Storage - 80 GB
 
-## เปลี่ยน CentOS 8 ให้เป็น Oracle Linux 8
+## 2. เปลี่ยน CentOS 8 ให้เป็น Oracle Linux 8
 
 ติดตั้ง package ที่ต้องใช้งาน
 ```bash
@@ -31,7 +31,7 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 ```
 เท่านี้ก็เสร็จสิ้นการเปลี่ยน CentOS 8 เป็น Oracle Linux 8 แล้ว
 
-## ขั้นตอนการติดตั้ง Oracle database
+## 3. ขั้นตอนการติดตั้ง Oracle database
 
 ตรวจสอบชื่อของ. host
 ```bash
@@ -271,7 +271,7 @@ exit
 ```
 
 
-## สร้าง. Database
+## 4. สร้าง. Database
 
 start listner
 ```bash
