@@ -1,4 +1,4 @@
-# วิธีเปลี่ยน CentOS 8 เป็น Oracle Linux 8 และติดตั้ง Oracle database 19c enterprise
+# วิธีเปลี่ยน CentOS 8 เป็น Oracle Linux 8 และติดตั้ง Oracle database 19c enterprise บน Digital Ocean
 
 ## ทรัพยากรที่ต้องการ
 - CPU - 3.4 Ghz (2 cores)
