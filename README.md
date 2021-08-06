@@ -315,23 +315,6 @@ EOF
 เป็นอันเสร็จสิ้นการเปลี่ยน CentOS 8 เป็น Oracle Linux 8 และการติดตั้ง Oracle Database
 
 ## อ้างอิง
-(https://blog.tuningsql.com/how-to-install-oracle-19c-on-a-digitalocean-droplet-without-asm/)[https://blog.tuningsql.com/how-to-install-oracle-19c-on-a-digitalocean-droplet-without-asm/]
-(https://oracle-base.com/articles/19c/oracle-db-19c-installation-on-oracle-linux-8#Top) [https://oracle-base.com/articles/19c/oracle-db-19c-installation-on-oracle-linux-8#Top]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- https://blog.tuningsql.com/how-to-install-oracle-19c-on-a-digitalocean-droplet-without-asm/
+- https://oracle-base.com/articles/19c/oracle-db-19c-installation-on-oracle-linux-8#Top
 
