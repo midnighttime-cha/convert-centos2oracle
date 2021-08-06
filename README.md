@@ -316,5 +316,5 @@ EOF
 
 ## อ้างอิง
 - [Oracle Database 19c Installation On Oracle Linux 8](https://blog.tuningsql.com/how-to-install-oracle-19c-on-a-digitalocean-droplet-without-asm/)
-- (How to Install Oracle 19c on a DigitalOcean Droplet Without ASM (Easiest Install Ever With Tons of Pictures)[https://oracle-base.com/articles/19c/oracle-db-19c-installation-on-oracle-linux-8#Top]
+- [How to Install Oracle 19c on a DigitalOcean Droplet Without ASM (Easiest Install Ever With Tons of Pictures](https://oracle-base.com/articles/19c/oracle-db-19c-installation-on-oracle-linux-8#Top)
 
