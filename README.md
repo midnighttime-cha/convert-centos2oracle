@@ -14,26 +14,22 @@ sudo bash centos2ol.sh
 
 ## 2. ทำการ reboot เครื่อง
 ```bash
+yum distro-sync -y
+yum upgrade -y
 sudo reboot
 ```
 
-## 3. เปิดเครื่องกลับมา server จะกลายเป็น Oracle เรียบร้อย จากนั้นทำการอัพเดท
-```bash
-yum distro-sync -y
-yum upgrade -y
-```
-
-## 4. ทำการ Disable SELINUX
+## 3. ทำการ Disable SELINUX
 ```bash
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 ```
 
-## 5. ติดตั้ง Oracle Prerequisites
+## 4. ติดตั้ง Oracle Prerequisites
 ```bash
 yum install -y oracle-database-preinstall-19c
 yum update -y
 ```
-## 6. สร้าง Folder
+## 5. สร้าง Folder
 ```bash
 mkdir -p /u01/app/oracle/product/19.0.0/dbhome_1
 mkdir -p /u01/oradata
@@ -74,13 +70,13 @@ export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
 source ~/.bash_profile
 ```
 
-## 8. แก้ไขไฟล์ /etc/hosts
+## 6. แก้ไขไฟล์ /etc/hosts
 ```bash
 HOSTS_ENTRY=`ifconfig eth0 | grep 'inet ' | awk '{ print $2 }'`" "`hostname`
 sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
 ```
 
-## 9. ดาวน์โหลดไฟล์ Oracle 19c
+## 7. ดาวน์โหลดไฟล์ Oracle 19c
 ```bash
 cd /root
 ```
@@ -94,17 +90,17 @@ su - oracle
 cd $ORACLE_HOME
 ```
 
-## 10. ทำการ unzip ไฟล์ติดตั้ง
+## 8. ทำการ unzip ไฟล์ติดตั้ง
 ```bash
 unzip -oq LINUX.X64_*_db_home.zip
 ```
 
-## 11. ทำการ Copy คำสั่งด้านล่าง
+## 9. ทำการ Copy คำสั่งด้านล่าง
 ```bash
 
 ```
 
-## 12. รันคำสั่งต่อไปนี้
+## 10. รันคำสั่งต่อไปนี้
 ```bash
 vi ~/.bash_profile
 ```
