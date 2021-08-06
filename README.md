@@ -9,7 +9,7 @@
 ```bash
 git clone https://github.com/oracle/centos2ol.git
 cd centos2ol
-sudo sh centos2ol.sh
+sudo bash centos2ol.sh
 ```
 
 ## 2. ทำการ reboot เครื่อง
