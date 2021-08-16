@@ -141,7 +141,7 @@ sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
 ## เริ่มติดตั้ง Oracle ได้
 
 ### Donwload ไฟล์ Oracle Linux
-(https://mega.nz/file/SpoG2TjK#ZzSNxc0ty_KVYWy28kwvqXwgvr58ZDo1Qu1RoUjrs7w)[>>Download here<<]
+(https://mega.nz/file/SpoG2TjK#ZzSNxc0ty_KVYWy28kwvqXwgvr58ZDo1Qu1RoUjrs7w)[Download here]
 
 ทำการ upload file วางบน server 
 ```bash
