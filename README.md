@@ -149,8 +149,8 @@ sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
 ```bash
 ## ทำการ unzip ไฟล์ ติดตั้ง
 cd /root
-chown oracle:oinstall /path/to/software/LINUX.X64_193000_db_home.zip
-mv /path/to/software/LINUX.X64_193000_db_home.zip /u01/app/oracle/product/19.0.0/dbhome_1/LINUX.X64_193000_db_home.zip
+chown oracle:oinstall ./LINUX.X64_193000_db_home.zip
+mv ./LINUX.X64_193000_db_home.zip /u01/app/oracle/product/19.0.0/dbhome_1/LINUX.X64_193000_db_home.zip
 ```
 ติดตั้ง
 ```bash
