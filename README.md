@@ -145,6 +145,11 @@ sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
 ### Donwload ไฟล์ Oracle Linux
 [>>Download Here<<](https://mega.nz/file/SpoG2TjK#ZzSNxc0ty_KVYWy28kwvqXwgvr58ZDo1Qu1RoUjrs7w)
 
+ตั้งค่า DISPLAY
+```bash
+DISPLAY=<machine-name>:0.0; export DISPLAY
+```
+
 ทำการ upload file วางบน server 
 ```bash
 ## ทำการ unzip ไฟล์ ติดตั้ง
