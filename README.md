@@ -161,9 +161,9 @@ systemctl disable firewalld
 สร้าง Folder ต่อไปนี้
 ```bash
 mkdir -p /u01/app/oracle/product/19.0.0/dbhome_1
-mkdir -p /u02/oradata
-chown -R oracle:oinstall /u01 /u02
-chmod -R 775 /u01 /u02
+mkdir -p /u01/oradata
+chown -R oracle:oinstall /u01 
+chmod -R 775 /u01
 ```
 
 ทำการเปลี่ยนโหมดใช้. user: oracle
@@ -178,67 +178,49 @@ mkdir /home/oracle/scripts
 
 ตั้งค่า Enveroinment ของ oracle
 ```bash
-cat > /home/oracle/scripts/setEnv.sh <<EOF
+su - oracle
+````
+next
+```bash
+cat >> .bash_profile <<EOF
 # Oracle Settings
 export TMP=/tmp
 export TMPDIR=\$TMP
-
-export ORACLE_HOSTNAME=ol8-19.localdomain
-export ORACLE_UNQNAME=cdb1
+export ORACLE_HOSTNAME=`hostname`
+export ORACLE_UNQNAME=ora19c
 export ORACLE_BASE=/u01/app/oracle
 export ORACLE_HOME=\$ORACLE_BASE/product/19.0.0/dbhome_1
 export ORA_INVENTORY=/u01/app/oraInventory
-export ORACLE_SID=cdb1
-export PDB_NAME=pdb1
-export DATA_DIR=/u02/oradata
-
+export ORACLE_SID=ora19c
 export PATH=/usr/sbin:/usr/local/bin:\$PATH
 export PATH=\$ORACLE_HOME/bin:\$PATH
-
 export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
 export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
 EOF
-
-echo "/home/oracle/scripts/setEnv.sh" >> /home/oracle/.bash_profile
+```
+next
+```bash
+exit
 ```
 
-สร้าง ไฟล์ในการ start/stop service
+แก้ไขไฟล์ `/etc/hosts`
 ```bash
-cat > /home/oracle/scripts/start_all.sh <<EOF
-#!/bin/bash
-/home/oracle/scripts/setEnv.sh
-
-export ORAENV_ASK=NO
-oraenv
-export ORAENV_ASK=YES
-
-dbstart \$ORACLE_HOME
-EOF
-
-
-cat > /home/oracle/scripts/stop_all.sh <<EOF
-#!/bin/bash
-/home/oracle/scripts/setEnv.sh
-
-export ORAENV_ASK=NO
-oraenv
-export ORAENV_ASK=YES
-
-dbshut \$ORACLE_HOME
-EOF
-
-chown -R oracle:oinstall /home/oracle/scripts
-chmod u+x /home/oracle/scripts/*.sh
-
-~/scripts/start_all.sh
-~/scripts/stop_all.sh
+HOSTS_ENTRY=`ifconfig eth0 | grep 'inet ' | awk '{ print $2 }'`" "`hostname`
+sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
 ```
 
 เริ่มติดตั้ง Oracle ได้
 ```bash
-cd $ORACLE_HOME
 ## ทำการ unzip ไฟล์ ติดตั้ง
-unzip -oq /path/to/software/LINUX.X64_193000_db_home.zip
+cd /root
+chown oracle:oinstall /path/to/software/LINUX.X64_193000_db_home.zip
+mv /path/to/software/LINUX.X64_193000_db_home.zip /u01/app/oracle/product/19.0.0/dbhome_1/LINUX.X64_193000_db_home.zip
+```
+ติดตั้ง
+```bash
+su - oracle
+cd $ORACLE_HOME
+unzip -oq LINUX.X64_*_db_home.zip
 
 # หลอกว่านี้คือ Oracle 7
 export CV_ASSUME_DISTID=OEL7.6
