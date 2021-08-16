@@ -33,61 +33,13 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
 ## 3. ขั้นตอนการติดตั้ง Oracle database
 
-ตรวจสอบชื่อของ. host
+### ติดตั้ง Oracle Installation Prerequisites
 ```bash
-cat /etc/hostname
-
-# Ouput example
-centos2oracle.local
-```
-
-ติดตั้ง Oracle Installation Prerequisites
-```bash
-dnf install -y oracle-database-preinstall-19c
+yum install -y oracle-database-preinstall-19c
 yum update -y
 ```
 
-นำคำสั่งต่อไปนี้ไปแก้ไขในไฟล์ชื่อ `/etc/sysctl.conf`
-```bash
-# File: /etc/sysctl.conf
-...
-fs.file-max = 6815744
-kernel.sem = 250 32000 100 128
-kernel.shmmni = 4096
-kernel.shmall = 1073741824
-kernel.shmmax = 4398046511104
-kernel.panic_on_oops = 1
-net.core.rmem_default = 262144
-net.core.rmem_max = 4194304
-net.core.wmem_default = 262144
-net.core.wmem_max = 1048576
-net.ipv4.conf.all.rp_filter = 2
-net.ipv4.conf.default.rp_filter = 2
-fs.aio-max-nr = 1048576
-net.ipv4.ip_local_port_range = 9000 65500
-...
-```
-จากนั้น run คำสั่ง
-```bash
-/sbin/sysctl -p
-```
-
-ตรวจสอบไฟล์ `/etc/security/limits.d/oracle-database-preinstall-19c.conf` ว่าเป็นไปตามคำสั่งด้านล่างหรือไม่
-```bash
-# File: /etc/security/limits.d/oracle-database-preinstall-19c.conf
-...
-oracle   soft   nofile    1024
-oracle   hard   nofile    65536
-oracle   soft   nproc    16384
-oracle   hard   nproc    16384
-oracle   soft   stack    10240
-oracle   hard   stack    32768
-oracle   hard   memlock    134217728
-oracle   soft   memlock    134217728
-...
-```
-
-ติดตั้ง package ที่จำเป็น
+### ติดตั้ง package ที่จำเป็น
 ```bash
 dnf install -y bc    
 dnf install -y binutils
@@ -122,15 +74,13 @@ dnf install -y targetcli # ACFS
 dnf install -y smartmontools
 dnf install -y sysstat
 dnf install -y unixODBC
-
-# New for OL8
 dnf install -y libnsl
 dnf install -y libnsl.i686
 dnf install -y libnsl2
 dnf install -y libnsl2.i686
 ```
 
-สร้าง user แล้วกลุ่มต่อไปนี้
+### สร้าง user แล้วกลุ่มต่อไปนี้
 ```bash
 groupadd -g 54321 oinstall
 groupadd -g 54322 dba
@@ -139,26 +89,20 @@ groupadd -g 54323 oper
 useradd -u 54321 -g oinstall -G dba,oper oracle
 ```
 
-กำหนด Password ให้กับ user oracle
+### กำหนด Password ให้กับ user oracle
 ```bash
 passwd oracle
 ```
 
-ตั้งค่า SELINUX เป็น permissive ในไฟล์ /etc/selinux/config
+### ตั้งค่า SELINUX เป็น permissive ในไฟล์ /etc/selinux/config
 ```bash
 # Out File: /etc/selinux/config
 ...
 SELINUX=permissive
 ...
-````
-
-ถ้าระบบมี firewall ให้ทำการปิดการใช้งานก่อน
-```bash
-systemctl stop firewalld
-systemctl disable firewalld
 ```
 
-สร้าง Folder ต่อไปนี้
+### สร้าง Folder ต่อไปนี้
 ```bash
 mkdir -p /u01/app/oracle/product/19.0.0/dbhome_1
 mkdir -p /u01/oradata
@@ -166,23 +110,11 @@ chown -R oracle:oinstall /u01
 chmod -R 775 /u01
 ```
 
-ทำการเปลี่ยนโหมดใช้. user: oracle
+### ตั้งค่า Enveroinment ของ oracle
 ```bash
 su - oracle
-```
-
-สร้าง. Folder
-```bash
-mkdir /home/oracle/scripts
-```
-
-ตั้งค่า Enveroinment ของ oracle
-```bash
-su - oracle
-````
-next
-```bash
 cat >> .bash_profile <<EOF
+
 # Oracle Settings
 export TMP=/tmp
 export TMPDIR=\$TMP
@@ -197,19 +129,21 @@ export PATH=\$ORACLE_HOME/bin:\$PATH
 export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
 export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
 EOF
-```
-next
-```bash
 exit
 ```
 
-แก้ไขไฟล์ `/etc/hosts`
+### แก้ไขไฟล์ `/etc/hosts`
 ```bash
 HOSTS_ENTRY=`ifconfig eth0 | grep 'inet ' | awk '{ print $2 }'`" "`hostname`
 sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
 ```
 
-เริ่มติดตั้ง Oracle ได้
+## เริ่มติดตั้ง Oracle ได้
+
+### Donwload ไฟล์ Oracle Linux
+(>>Download here<<)[https://mega.nz/file/SpoG2TjK#ZzSNxc0ty_KVYWy28kwvqXwgvr58ZDo1Qu1RoUjrs7w]
+
+ทำการ upload file วางบน server 
 ```bash
 ## ทำการ unzip ไฟล์ ติดตั้ง
 cd /root
