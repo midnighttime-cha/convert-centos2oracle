@@ -199,7 +199,7 @@ export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
 export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
 EOF
 
-echo ". /home/oracle/scripts/setEnv.sh" >> /home/oracle/.bash_profile
+echo "/home/oracle/scripts/setEnv.sh" >> /home/oracle/.bash_profile
 ```
 
 สร้าง ไฟล์ในการ start/stop service
