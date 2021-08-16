@@ -257,6 +257,7 @@ exit
 
 start listner
 ```bash
+su - oracle
 lsnrctl start
 ```
 สร้าง Database
