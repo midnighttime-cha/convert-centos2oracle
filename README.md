@@ -35,49 +35,49 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
 ### ติดตั้ง Oracle Installation Prerequisites
 ```bash
-yum install -y oracle-database-preinstall-19c
+dnf install -y oracle-database-preinstall-19c
 yum update -y
 ```
 
 ### ติดตั้ง package ที่จำเป็น
 ```bash
-yum install -y bc    
-yum install -y binutils
-yum install -y compat-libstdc++-33
-yum install -y elfutils-libelf
-yum install -y elfutils-libelf-devel
-yum install -y fontconfig-devel
-yum install -y glibc
-yum install -y glibc-devel
-yum install -y ksh
-yum install -y libaio
-yum install -y libaio-devel
-yum install -y libXrender
-yum install -y libXrender-devel
-yum install -y libX11
-yum install -y libXau
-yum install -y libXi
-yum install -y libXtst
-yum install -y libgcc
-yum install -y librdmacm-devel
-yum install -y libstdc++
-yum install -y libstdc++-devel
-yum install -y libxcb
-yum install -y make
-yum install -y net-tools # Clusterware
-yum install -y nfs-utils # ACFS
-yum install -y python # ACFS
-yum install -y python-configshell # ACFS
-yum install -y python-rtslib # ACFS
-yum install -y python-six # ACFS
-yum install -y targetcli # ACFS
-yum install -y smartmontools
-yum install -y sysstat
-yum install -y unixODBC
-yum install -y libnsl
-yum install -y libnsl.i686
-yum install -y libnsl2
-yum install -y libnsl2.i686
+dnf install -y bc    
+dnf install -y binutils
+dnf install -y compat-libstdc++-33
+dnf install -y elfutils-libelf
+dnf install -y elfutils-libelf-devel
+dnf install -y fontconfig-devel
+dnf install -y glibc
+dnf install -y glibc-devel
+dnf install -y ksh
+dnf install -y libaio
+dnf install -y libaio-devel
+dnf install -y libXrender
+dnf install -y libXrender-devel
+dnf install -y libX11
+dnf install -y libXau
+dnf install -y libXi
+dnf install -y libXtst
+dnf install -y libgcc
+dnf install -y librdmacm-devel
+dnf install -y libstdc++
+dnf install -y libstdc++-devel
+dnf install -y libxcb
+dnf install -y make
+dnf install -y net-tools # Clusterware
+dnf install -y nfs-utils # ACFS
+dnf install -y python # ACFS
+dnf install -y python-configshell # ACFS
+dnf install -y python-rtslib # ACFS
+dnf install -y python-six # ACFS
+dnf install -y targetcli # ACFS
+dnf install -y smartmontools
+dnf install -y sysstat
+dnf install -y unixODBC
+dnf install -y libnsl
+dnf install -y libnsl.i686
+dnf install -y libnsl2
+dnf install -y libnsl2.i686
 ```
 
 ### สร้าง user แล้วกลุ่มต่อไปนี้
@@ -102,53 +102,102 @@ SELINUX=permissive
 ...
 ```
 
-### สร้าง Folder ต่อไปนี้
+ถ้าหากมี Firewall ให้ทำการ disable เสียก่อน
+```bash
+systemctl stop firewalld
+systemctl disable firewalld
+```
+
+restart server
+```bash
+sudo reboot
+```
+
+
+
+### สร้าง Folder ต่อไปนี้เพื่อทำการติดตั้ง
 ```bash
 mkdir -p /u01/app/oracle/product/19.0.0/dbhome_1
-mkdir -p /u01/oradata
-chown -R oracle:oinstall /u01 
-chmod -R 775 /u01
+mkdir -p /u02/oradata
+chown -R oracle:oinstall /u01 /u02
+chmod -R 775 /u01 /u02
+mkdir /home/oracle/scripts
 ```
 
 ### ตั้งค่า Enveroinment ของ oracle
 ```bash
 su - oracle
-cat >> .bash_profile <<EOF
 
+cat > /home/oracle/scripts/setEnv.sh <<EOF
 # Oracle Settings
 export TMP=/tmp
 export TMPDIR=\$TMP
-export ORACLE_HOSTNAME=`hostname`
-export ORACLE_UNQNAME=ora19c
+
+export ORACLE_HOSTNAME=ol8-19.localdomain
+export ORACLE_UNQNAME=cdb1
 export ORACLE_BASE=/u01/app/oracle
 export ORACLE_HOME=\$ORACLE_BASE/product/19.0.0/dbhome_1
 export ORA_INVENTORY=/u01/app/oraInventory
-export ORACLE_SID=ora19c
+export ORACLE_SID=cdb1
 export PDB_NAME=pdb1
 export DATA_DIR=/u02/oradata
+
 export PATH=/usr/sbin:/usr/local/bin:\$PATH
 export PATH=\$ORACLE_HOME/bin:\$PATH
+
 export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
 export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
 EOF
-exit
-```
 
-### แก้ไขไฟล์ `/etc/hosts`
+exit
+
+echo ". /home/oracle/scripts/setEnv.sh" >> /home/oracle/.bash_profile
+```
+สร้างไฟล์ start/stop สำหรับ application
 ```bash
-HOSTS_ENTRY=`ifconfig eth0 | grep 'inet ' | awk '{ print $2 }'`" "`hostname`
-sed -i "0,/^$/ s/^\$/$HOSTS_ENTRY\n/" /etc/hosts
+cat > /home/oracle/scripts/start_all.sh <<EOF
+#!/bin/bash
+/home/oracle/scripts/setEnv.sh
+
+export ORAENV_ASK=NO
+oraenv
+export ORAENV_ASK=YES
+
+dbstart \$ORACLE_HOME
+EOF
+
+
+cat > /home/oracle/scripts/stop_all.sh <<EOF
+#!/bin/bash
+/home/oracle/scripts/setEnv.sh
+
+export ORAENV_ASK=NO
+oraenv
+export ORAENV_ASK=YES
+
+dbshut \$ORACLE_HOME
+EOF
+
+chown -R oracle:oinstall /home/oracle/scripts
+chmod u+x /home/oracle/scripts/*.sh
+```
+*** วิธีใช้งานงาน
+```bash
+su - oracle
+~/scripts/start_all.sh
+~/scripts/stop_all.sh
 ```
 
 ## เริ่มติดตั้ง Oracle ได้
 
-### Donwload ไฟล์ Oracle Linux
-[>>Download Here<<](https://mega.nz/file/SpoG2TjK#ZzSNxc0ty_KVYWy28kwvqXwgvr58ZDo1Qu1RoUjrs7w)
-
-ตั้งค่า DISPLAY
+### ตั้งค่า DISPLAY environmental
 ```bash
 DISPLAY=<machine-name>:0.0; export DISPLAY
+# <machine-name> ex. --> cenos2oracle.local
 ```
+
+### Donwload ไฟล์ Oracle Linux และทำการติดตั้ง
+[>>Download Here<<](https://mega.nz/file/SpoG2TjK#ZzSNxc0ty_KVYWy28kwvqXwgvr58ZDo1Qu1RoUjrs7w)
 
 ทำการ upload file วางบน server 
 ```bash
@@ -167,26 +216,26 @@ unzip -oq LINUX.X64_*_db_home.zip
 export CV_ASSUME_DISTID=OEL7.6
 
 #ติดตั้ง
-./runInstaller -ignorePrereq -waitforcompletion -silent \
-    -responseFile ${ORACLE_HOME}/install/response/db_install.rsp \
-    oracle.install.option=INSTALL_DB_SWONLY \
-    ORACLE_HOSTNAME=${ORACLE_HOSTNAME}\
-    UNIX_GROUP_NAME=oinstall \
-    INVENTORY_LOCATION=${ORA_INVENTORY} \
-    SELECTED_LANGUAGES=en,en_GB \
-    ORACLE_HOME=${ORACLE_HOME} \
-    ORACLE_BASE=${ORACLE_BASE} \
-    oracle.install.db.InstallEdition=EE \
-    oracle.install.db.OSDBA_GROUP=dba \
-    oracle.install.db.OSBACKUPDBA_GROUP=dba \
-    oracle.install.db.OSDGDBA_GROUP=dba \
-    oracle.install.db.OSKMDBA_GROUP=dba \
-    oracle.install.db.OSRACDBA_GROUP=dba \
-    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false \
-    DECLINE_SECURITY_UPDATES=true 
+./runInstaller -ignorePrereq -waitforcompletion -silent                        \
+    -responseFile ${ORACLE_HOME}/install/response/db_install.rsp               \
+    oracle.install.option=INSTALL_DB_SWONLY                                    \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME}                                         \
+    UNIX_GROUP_NAME=oinstall                                                   \
+    INVENTORY_LOCATION=${ORA_INVENTORY}                                        \
+    SELECTED_LANGUAGES=en,en_GB                                                \
+    ORACLE_HOME=${ORACLE_HOME}                                                 \
+    ORACLE_BASE=${ORACLE_BASE}                                                 \
+    oracle.install.db.InstallEdition=EE                                        \
+    oracle.install.db.OSDBA_GROUP=dba                                          \
+    oracle.install.db.OSBACKUPDBA_GROUP=dba                                    \
+    oracle.install.db.OSDGDBA_GROUP=dba                                        \
+    oracle.install.db.OSKMDBA_GROUP=dba                                        \
+    oracle.install.db.OSRACDBA_GROUP=dba                                       \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false                                 \
+    DECLINE_SECURITY_UPDATES=true
 ```
 
-ออกจากการ ser oracle ไปยัง user root และรันไฟล์ต่อไปนี้
+ออกจากการ user oracle ไปยัง user root และรันไฟล์ต่อไปนี้
 ```bash
 exit
 /u01/app/oraInventory/orainstRoot.sh
@@ -196,32 +245,33 @@ exit
 
 ## 4. สร้าง. Database
 
-start listner
+ทำการ start listner
 ```bash
 su - oracle
 lsnrctl start
 ```
 สร้าง Database
 ```bash
-dbca -silent -createDatabase \
-     -templateName General_Purpose.dbc \
-     -gdbname ${ORACLE_SID} -sid  ${ORACLE_SID} -responseFile NO_VALUE \
-     -characterSet AL32UTF8 \
-     -sysPassword SysPassword1 \
-     -systemPassword SysPassword1 \
-     -createAsContainerDatabase true \
-     -numberOfPDBs 1 \
-     -pdbName ${PDB_NAME} \
-     -pdbAdminPassword PdbPassword1 \
-     -databaseType MULTIPURPOSE \
-     -memoryMgmtType auto_sga \
-     -totalMemory 2000 \
-     -storageType FS \
-     -datafileDestination "${DATA_DIR}" \
-     -redoLogFileSize 50 \
-     -emConfiguration NONE \
+dbca -silent -createDatabase                                                   \
+     -templateName General_Purpose.dbc                                         \
+     -gdbname ${ORACLE_SID} -sid  ${ORACLE_SID} -responseFile NO_VALUE         \
+     -characterSet AL32UTF8                                                    \
+     -sysPassword SysPassword1                                                 \
+     -systemPassword SysPassword1                                              \
+     -createAsContainerDatabase true                                           \
+     -numberOfPDBs 1                                                           \
+     -pdbName ${PDB_NAME}                                                      \
+     -pdbAdminPassword PdbPassword1                                            \
+     -databaseType MULTIPURPOSE                                                \
+     -memoryMgmtType auto_sga                                                  \
+     -totalMemory 2000                                                         \
+     -storageType FS                                                           \
+     -datafileDestination "${DATA_DIR}"                                        \
+     -redoLogFileSize 50                                                       \
+     -emConfiguration NONE                                                     \
      -ignorePreReqs
 ```
+
 แก้ไขไฟล์ `/etc/oratab` ให้เป็น 'Y'
 ```bash
 cdb1:/u01/app/oracle/product/19.0.0/db_1:Y
