@@ -250,7 +250,7 @@ exit
 su - oracle
 lsnrctl start
 ```
-สร้าง Database
+สร้าง Instance
 ```bash
 dbca -silent -createDatabase                                                   \
      -templateName General_Purpose.dbc                                         \
