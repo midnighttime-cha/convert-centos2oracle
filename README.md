@@ -122,12 +122,11 @@ mkdir -p /u02/oradata
 chown -R oracle:oinstall /u01 /u02
 chmod -R 775 /u01 /u02
 mkdir /home/oracle/scripts
+chown -R oracle:oinstall /home/oracle/scripts
 ```
 
 ### ตั้งค่า Enveroinment ของ oracle
 ```bash
-su - oracle
-
 cat > /home/oracle/scripts/setEnv.sh <<EOF
 # Oracle Settings
 export TMP=/tmp
@@ -150,7 +149,7 @@ export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
 EOF
 
 exit
-
+/home/oracle/scripts
 echo ". /home/oracle/scripts/setEnv.sh" >> /home/oracle/.bash_profile
 ```
 สร้างไฟล์ start/stop สำหรับ application
