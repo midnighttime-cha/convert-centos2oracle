@@ -284,7 +284,15 @@ exit;
 EOF
 ```
 
+In the file you put in /etc/init.d/ you have to set it executable with:
+
+chmod +x /etc/init.d/start_my_app
+Thanks to @meetamit, if this does not run you have to create a symlink to /etc/rc.d/
+
+ln -s /etc/init.d/start_my_app /etc/rc.d/
+
 เป็นอันเสร็จสิ้นการเปลี่ยน CentOS 8 เป็น Oracle Linux 8 และการติดตั้ง Oracle Database
+
 
 
 ## Uninstall oracle
