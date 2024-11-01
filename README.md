@@ -35,49 +35,49 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
 ### ติดตั้ง Oracle Installation Prerequisites
 ```bash
-dnf install -y oracle-database-preinstall-19c
+yum install -y oracle-database-preinstall-19c
 yum update -y
 ```
 
 ### ติดตั้ง package ที่จำเป็น
 ```bash
-dnf install -y bc    
-dnf install -y binutils
-dnf install -y compat-libstdc++-33
-dnf install -y elfutils-libelf
-dnf install -y elfutils-libelf-devel
-dnf install -y fontconfig-devel
-dnf install -y glibc
-dnf install -y glibc-devel
-dnf install -y ksh
-dnf install -y libaio
-dnf install -y libaio-devel
-dnf install -y libXrender
-dnf install -y libXrender-devel
-dnf install -y libX11
-dnf install -y libXau
-dnf install -y libXi
-dnf install -y libXtst
-dnf install -y libgcc
-dnf install -y librdmacm-devel
-dnf install -y libstdc++
-dnf install -y libstdc++-devel
-dnf install -y libxcb
-dnf install -y make
-dnf install -y net-tools # Clusterware
-dnf install -y nfs-utils # ACFS
-dnf install -y python # ACFS
-dnf install -y python-configshell # ACFS
-dnf install -y python-rtslib # ACFS
-dnf install -y python-six # ACFS
-dnf install -y targetcli # ACFS
-dnf install -y smartmontools
-dnf install -y sysstat
-dnf install -y unixODBC
-dnf install -y libnsl
-dnf install -y libnsl.i686
-dnf install -y libnsl2
-dnf install -y libnsl2.i686
+yum install -y bc    
+yum install -y binutils
+yum install -y compat-libstdc++-33
+yum install -y elfutils-libelf
+yum install -y elfutils-libelf-devel
+yum install -y fontconfig-devel
+yum install -y glibc
+yum install -y glibc-devel
+yum install -y ksh
+yum install -y libaio
+yum install -y libaio-devel
+yum install -y libXrender
+yum install -y libXrender-devel
+yum install -y libX11
+yum install -y libXau
+yum install -y libXi
+yum install -y libXtst
+yum install -y libgcc
+yum install -y librdmacm-devel
+yum install -y libstdc++
+yum install -y libstdc++-devel
+yum install -y libxcb
+yum install -y make
+yum install -y net-tools # Clusterware
+yum install -y nfs-utils # ACFS
+yum install -y python # ACFS
+yum install -y python-configshell # ACFS
+yum install -y python-rtslib # ACFS
+yum install -y python-six # ACFS
+yum install -y targetcli # ACFS
+yum install -y smartmontools
+yum install -y sysstat
+yum install -y unixODBC
+yum install -y libnsl
+yum install -y libnsl.i686
+yum install -y libnsl2
+yum install -y libnsl2.i686
 ```
 
 ### สร้าง user แล้วกลุ่มต่อไปนี้
