@@ -41,43 +41,43 @@ yum update -y
 
 ### ติดตั้ง package ที่จำเป็น
 ```bash
-yum install -y bc    
-yum install -y binutils
-yum install -y compat-libstdc++-33
-yum install -y elfutils-libelf
-yum install -y elfutils-libelf-devel
-yum install -y fontconfig-devel
-yum install -y glibc
-yum install -y glibc-devel
-yum install -y ksh
-yum install -y libaio
-yum install -y libaio-devel
-yum install -y libXrender
-yum install -y libXrender-devel
-yum install -y libX11
-yum install -y libXau
-yum install -y libXi
-yum install -y libXtst
-yum install -y libgcc
-yum install -y librdmacm-devel
-yum install -y libstdc++
-yum install -y libstdc++-devel
-yum install -y libxcb
-yum install -y make
-yum install -y net-tools # Clusterware
-yum install -y nfs-utils # ACFS
-yum install -y python # ACFS
-yum install -y python-configshell # ACFS
-yum install -y python-rtslib # ACFS
-yum install -y python-six # ACFS
-yum install -y targetcli # ACFS
-yum install -y smartmontools
-yum install -y sysstat
-yum install -y unixODBC
-yum install -y libnsl
-yum install -y libnsl.i686
-yum install -y libnsl2
-yum install -y libnsl2.i686
+yum install -y bc \
+   binutils \
+   compat-libstdc++-33 \
+   elfutils-libelf \
+   elfutils-libelf-devel \
+   fontconfig-devel \
+   glibc \
+   glibc-devel \
+   ksh \
+   libaio \
+   libaio-devel \
+   libXrender \
+   libXrender-devel \
+   libX11 \
+   libXau \
+   libXi \
+   libXtst \
+   libgcc \
+   librdmacm-devel \
+   libstdc++ \
+   libstdc++-devel \
+   libxcb \
+   make \
+   net-tools \
+   nfs-utils \
+   python \
+   python-configshell \
+   python-rtslib \
+   python-six \
+   targetcli \
+   smartmontools \
+   sysstat \
+   unixODBC \
+   libnsl \
+   libnsl.i686 \
+   libnsl2 \
+   libnsl2.i686
 ```
 
 ### สร้าง user แล้วกลุ่มต่อไปนี้
